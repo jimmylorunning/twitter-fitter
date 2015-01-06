@@ -1,0 +1,3 @@
+== Twitter, Fitter(, Happier)
+
+Week 3 of An App Per Week. I'm really not sure what this app will end up doing. This is my third non-tutorial Rails app. All I know is I want to interface with the Twitter API somehow, pull some tweets down and do some kind of cool calculation on it. I will be continuously deploying to {Heroku}[https://secret-brushlands-4139.herokuapp.com/]. You can also read about what I've learned on {my blog}[http://jimmylocoding.com].
