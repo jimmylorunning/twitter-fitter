@@ -15,4 +15,5 @@
 /tmp
 
 # Ignore Twitter API key
-/config/initializers/twitter.rb
+/config/application.yml
+#/config/initializers/twitter.rb
