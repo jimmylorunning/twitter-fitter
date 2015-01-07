@@ -39,6 +39,7 @@ gem 'turbolinks'							# makes following links faster
 gem 'jbuilder', '~> 1.2'			# Build JSON APIs with ease.
 
 gem 'autoprefixer-rails'      # automatically adds the proper vendor prefixes to your CSS code when it is compiled
+gem 'twitter'                 # ruby interface to the twitter API.
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby

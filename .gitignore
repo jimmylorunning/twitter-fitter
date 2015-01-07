@@ -15,4 +15,4 @@
 /tmp
 
 # Ignore Twitter API key
-/twitter_secret.txt
+/config/initializers/twitter.rb
