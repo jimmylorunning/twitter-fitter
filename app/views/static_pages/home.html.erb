@@ -1,8 +1,14 @@
-<h1>StaticPages#home</h1>
-<p>Find me in app/views/static_pages/home.html.erb</p>
-<p>My last 25 Tweets:
-<ul>
-	<% @jlc.each {|tweet| %>
-		<li><%= tweet.full_text %></li>
-	<% } %>
-</ul>
+<h1>TwitterFitter</h1>
+<%= form_tag('/', method: 'get') do %>
+  <%= label_tag(:twitter_handle, "@") %>
+  <%= text_field_tag(:twitter_handle, @handle) %>
+  <%= submit_tag("Fitter!") %>
+<% end %>
+
+<% if !@generated_tweet.empty? %>
+	<p>Generated tweet:
+	<strong>
+		<%= @generated_tweet %>
+	</strong>
+	</p>
+<% end %>

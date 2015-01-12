@@ -23,10 +23,8 @@ class MarkovChain
 	end
 
 	def add(word)
-			if (LINE_ENDINGS.include? self._last_suffix[-1])
-				self.new_line
-			end
-			self._last_prefix= self._last_prefix.slice(1..-1) << self._process(self._last_suffix)
+			self.new_line if (LINE_ENDINGS.include? self._last_suffix[-1])
+			self._last_prefix = self._next_prefix
 			self._last_suffix = word
 			if self._chain[self._last_prefix]
 				self._chain[self._last_prefix] = self._chain[self._last_prefix] << word
@@ -53,7 +51,7 @@ class MarkovChain
 		generated, length_counter = Array.new, 0
 		prefix = self._new_prefix
 		while ((new_word = self.suffix(prefix, generator)) && (length_counter < self.output_length))
-			(prefix << self._process(new_word)).shift
+			prefix = self._next_prefix(prefix, new_word)
 			generated << new_word
 			length_counter += 1
 		end
@@ -70,8 +68,10 @@ class MarkovChain
 		Array.new(self._prefix_length, '')
 	end
 
-	def _process(word)
-		(self._case_insensitive === true) ? word.downcase : word
+	# returns the next prefix given prefix & suffix (which defaults to last prefix & suffix)
+	def _next_prefix(prefix=self._last_prefix, suffix=self._last_suffix)
+		suffix = suffix.downcase if self._case_insensitive === true
+		prefix.slice(1..-1) << suffix
 	end
 
 end
