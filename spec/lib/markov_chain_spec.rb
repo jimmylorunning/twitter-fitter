@@ -22,7 +22,7 @@ RSpec.describe MarkovChain do
     it "raises an error if given invalid prefix length" do
     	expect{
     		MarkovChain.new(:prefix_length => 0)
-    	}.to raise_error("Error: prefix_length must be at least 1")
+    	}.to raise_error(ArgumentError)
     end
   end
 

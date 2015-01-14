@@ -14,7 +14,7 @@ class MarkovChain
 
 	def initialize(options = {})
 		@_prefix_length = options[:prefix_length] || 2
-		raise "Error: prefix_length must be at least 1" if @_prefix_length < 1
+		raise ArgumentError, "Prefix_length must be at least 1" if @_prefix_length < 1
 		@_last_prefix = Array.new(@_prefix_length, '')
 		@_last_suffix = ''
 		@_chain = Hash.new
