@@ -13,13 +13,13 @@ class MarkovChain
 	LINE_ENDINGS = ['.', '!', '?']
 
 	def initialize(options = {})
-		@_prefix_length = options[:prefix_length] || 2
-		raise ArgumentError, "Prefix_length must be at least 1" if @_prefix_length < 1
-		@_last_prefix = Array.new(@_prefix_length, '')
-		@_last_suffix = ''
-		@_chain = Hash.new
-		@output_length = options[:output_length] || 26
-		@_case_insensitive = options[:case_insensitive].nil? ? true : options[:case_insensitive]
+		self._prefix_length = options[:prefix_length] || 2
+		raise ArgumentError, "Prefix_length must be at least 1" if self._prefix_length < 1
+		self._last_prefix = Array.new(self._prefix_length, '')
+		self._last_suffix = ''
+		self._chain = Hash.new
+		self.output_length = options[:output_length] || 26
+		self._case_insensitive = options[:case_insensitive].nil? ? true : options[:case_insensitive]
 	end
 
 	def add(word)
