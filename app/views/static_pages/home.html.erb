@@ -4,7 +4,7 @@
 			<%= form_tag('/', method: 'get', class: 'form-inline') do %>
 				<div class="form-group">
 			  <%= label_tag(:twitter_handle, "@") %>
-			  <%= text_field_tag(:twitter_handle, @handle, class: 'form-control') %>
+			  <%= text_field_tag(:twitter_handle1, @handle1, class: 'form-control') %>
 				<%= label_tag(:twitter_handle2, "and @") %>
 				<%= text_field_tag(:twitter_handle2, @handle2, class: 'form-control') %>
 				<%= submit_tag("Combine!", class: 'btn btn-custom') %>
@@ -19,10 +19,13 @@
 			<% if !(@generated_tweets.nil? || @generated_tweets.empty?) %>
 				<h2>Generated tweets:</h2>
 					<% @generated_tweets.each do |tweet| %>
-						<%= form_tag(tweet_path, method: 'get') do %>
+						<%= form_tag(tweet_path, method: 'post') do %>
 							<div class="form-group">
 								<div class="col-sm-10">
-								<%= text_field_tag(:tweet, tweet, class: 'form-control') %>
+								<%= hidden_field_tag 'handle1', @handle1 %>
+								<%= hidden_field_tag 'handle2', @handle2 %>
+								<%= hidden_field_tag 'tweet_id', tweet[:id] %>
+								<%= text_field_tag(:tweet, tweet[:tweet], class: 'form-control') %>
 								</div>
 								<div class="col-sm-2">
 								<%= submit_tag("Tweet!", class: 'btn btn-success') %>

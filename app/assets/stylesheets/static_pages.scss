@@ -13,6 +13,17 @@ body {
 	background-color: $dark-gray;
 }
 
+.alert-container {
+	width: 100%;
+	padding-top: 1em;
+	background-color: $twitter-blue;
+}
+
+.alert {
+	width: 80%;
+	margin: 0em auto 0em auto;
+}
+
 .main {
 	margin-top: 0;
 	padding-top: 0;
