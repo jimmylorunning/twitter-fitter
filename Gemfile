@@ -16,7 +16,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'simplecov'
-#  gem 'debugger'
+  gem 'pry'
 end
 
 group :production do
@@ -24,22 +24,21 @@ group :production do
   gem 'rails_12factor'
 end
 
-group :assets do
-	gem 'coffee-rails', '~> 4.0.0'
-	gem 'uglifier', '>= 1.3.0'
-	gem 'sass-rails', '~> 4.0.0'
-	gem 'bootstrap-sass', '~> 3.2.0'
-end
-
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 
+gem 'coffee-rails', '~> 4.0.0'
+gem 'uglifier', '>= 1.3.0'
+gem 'sass-rails', '~> 4.0.0'
+gem 'bootstrap-sass', '~> 3.3.3'
+
 gem 'jquery-rails'
 gem 'turbolinks'							# makes following links faster
 gem 'jbuilder', '~> 1.2'			# Build JSON APIs with ease.
 
+gem 'sprockets-rails', :require => 'sprockets/railtie' # provides sprockets implementation for rails 4 asset pipeline
 gem 'autoprefixer-rails'      # automatically adds the proper vendor prefixes to your CSS code when it is compiled
 gem 'twitter'                 # ruby interface to the twitter API.
 gem 'figaro'                  # allows secure configuration using ENV vars in a yml file
