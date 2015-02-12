@@ -1,14 +1,43 @@
-<h1>TwitterFitter</h1>
-<%= form_tag('/', method: 'get') do %>
-  <%= label_tag(:twitter_handle, "@") %>
-  <%= text_field_tag(:twitter_handle, @handle) %>
-  <%= submit_tag("Fitter!") %>
-<% end %>
-
-<% if !@generated_tweet.empty? %>
-	<p>Generated tweet:
-	<strong>
-		<%= @generated_tweet %>
-	</strong>
-	</p>
-<% end %>
+<div class="jumbotron">
+<div class="container">
+			<h1><i class="fa fa-twitter"></i> TwitterFitter</h1>
+			<%= form_tag('/', method: 'get', class: 'form-inline') do %>
+				<div class="form-group">
+			  <%= label_tag(:twitter_handle, "@") %>
+			  <%= text_field_tag(:twitter_handle, @handle, class: 'form-control') %>
+				<%= label_tag(:twitter_handle2, "and @") %>
+				<%= text_field_tag(:twitter_handle2, @handle2, class: 'form-control') %>
+				<%= submit_tag("Combine!", class: 'btn btn-custom') %>
+				</div>
+			<% end %>
+</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 main-body">
+			<% unless @generated_tweets.nil? || @generated_tweets.empty? %>
+				<h2>Generated tweets:</h2>
+					<% @generated_tweets.each do |tweet| %>
+						<%= form_tag(tweet_path, method: 'get') do %>
+							<div class="form-group">
+								<div class="col-sm-10">
+								<%= text_field_tag(:tweet, tweet, class: 'form-control') %>
+								</div>
+								<div class="col-sm-2">
+								<%= submit_tag("Tweet!", class: 'btn btn-success') %>
+								</div>
+							</div>
+						<% end %>
+					<% end %>
+			<% end %>
+			<% unless @tweet.nil? || @tweet.empty? %>
+				<h2>Successfully tweeted:</h2>
+				<strong><a href="http://twitter.com/fittertweets">@FitterTweets</a></strong>: <%= @tweet %>
+			<% end %>
+		</div>
+	</div>
+</div>
+<footer>
+<h2>Follow Us <a href="http://twitter.com/fittertweets">@FitterTweets</a></h2>
+<p>TwitterFitter is a Markov Chain generator written for fun by Jimmy Lo. Follow my other coding projects on GitHub, my blog, or my real Twitter account.</p>
+</footer>

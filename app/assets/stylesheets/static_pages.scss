@@ -1,0 +1,40 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+  #FAB937;
+*/
+
+$twitter-blue: #4099FF;
+$yellowish: #FAB937;
+$light-gray: #EFEFEF;
+
+body {
+	background-color: $light-gray;
+}
+
+.jumbotron {
+	background-color: $twitter-blue;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.btn-custom {
+	background-color: lighten($yellowish, 10%);
+	&:hover {
+		background-color: lighten($yellowish, 20%);
+	}
+}
+
+.main-body {
+	padding-bottom: 3em;
+	form {
+		padding: 2em 0;
+	}
+}
+
+footer {
+	color: white;
+	margin: 3em 0;
+	padding: 5em 1em;
+	width: 100%;
+	background-color: #232323;
+}
