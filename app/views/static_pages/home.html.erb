@@ -12,10 +12,11 @@
 			<% end %>
 </div>
 </div>
+<div class="main">
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 main-body">
-			<% unless @generated_tweets.nil? || @generated_tweets.empty? %>
+			<% if !(@generated_tweets.nil? || @generated_tweets.empty?) %>
 				<h2>Generated tweets:</h2>
 					<% @generated_tweets.each do |tweet| %>
 						<%= form_tag(tweet_path, method: 'get') do %>
@@ -29,15 +30,22 @@
 							</div>
 						<% end %>
 					<% end %>
-			<% end %>
-			<% unless @tweet.nil? || @tweet.empty? %>
+			<% elsif !(@tweet.nil? || @tweet.empty?) %>
 				<h2>Successfully tweeted:</h2>
 				<strong><a href="http://twitter.com/fittertweets">@FitterTweets</a></strong>: <%= @tweet %>
+			<% else %>
+
+				<h2>Welcome</h2>
+				<p>Welcome to TwitterFitter, a place where you can join any two Twitter feeds to make new and interesting tweets!</p>
+				<p>Start by entering two different Twitter handles up above, and click 'Combine!'</p>
 			<% end %>
 		</div>
 	</div>
 </div>
+</div>
 <footer>
-<h2>Follow Us <a href="http://twitter.com/fittertweets">@FitterTweets</a></h2>
-<p>TwitterFitter is a Markov Chain generator written for fun by Jimmy Lo. Follow my other coding projects on GitHub, my blog, or my real Twitter account.</p>
+	<div class="container">
+	<h2>Follow Us <a href="http://twitter.com/fittertweets">@FitterTweets</a></h2>
+	<p>TwitterFitter is a Markov Chain generator written for fun by Jimmy Lo. Follow my other coding projects on <a href="https://github.com/jimmylorunning">GitHub</a>, my <a href="http://jimmylocoding.com">blog</a>, or <a href="http://twitter.com/jimmylocoding">my real Twitter account</a>.</p>
+	</div>
 </footer>

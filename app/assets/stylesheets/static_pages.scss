@@ -7,17 +7,27 @@
 $twitter-blue: #4099FF;
 $yellowish: #FAB937;
 $light-gray: #EFEFEF;
+$dark-gray: #232323;
 
 body {
+	background-color: $dark-gray;
+}
+
+.main {
+	margin-top: 0;
+	padding-top: 0;
+	width: 100%;
 	background-color: $light-gray;
 }
 
 .jumbotron {
 	background-color: $twitter-blue;
 	font-family: 'Open Sans', sans-serif;
+	margin-bottom: 0;
 }
 
 .btn-custom {
+	margin-left: 1em;
 	background-color: lighten($yellowish, 10%);
 	&:hover {
 		background-color: lighten($yellowish, 20%);
@@ -33,8 +43,7 @@ body {
 
 footer {
 	color: white;
-	margin: 3em 0;
-	padding: 5em 1em;
+	padding: 5em 0;
 	width: 100%;
 	background-color: #232323;
 }
