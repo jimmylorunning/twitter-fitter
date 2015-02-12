@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
+ruby '2.1.2'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.1.9'
 
 
 # for Heroku deployment - as described in Ap. A of ELLS book
@@ -14,7 +16,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'simplecov'
-  gem 'debugger'
+#  gem 'debugger'
 end
 
 group :production do
