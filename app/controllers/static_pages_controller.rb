@@ -10,7 +10,7 @@ class StaticPagesController < ApplicationController
     @handle2 = params['twitter_handle2']
     return if missing_handles? params
     begin
-      generate_tweets(get_feed)
+      generate_tweets get_feed
     rescue Twitter::Error => e
       flash.now[:error] = "Twitter error: #{e.message}"
     rescue StaticPagesController::InsufficientDataError => e
@@ -21,12 +21,8 @@ class StaticPagesController < ApplicationController
   def tweet
     @handle1 = params['handle1']
     @handle2 = params['handle2']
-    time_limit = (Time.now - (60 * 10)).to_s
     begin
-      tweets = Tweet.where("id = #{params['tweet_id'].to_i} AND created_at > '#{time_limit}'")
-      raise StaticPagesController::TweetNotFoundError, TWEET_NOT_FOUND_ERROR if tweets.empty?
-      @tweet = tweets.first.tweet
-      $client.update(@tweet)
+      send_tweet params[:tweet_id]
     rescue StaticPagesController::TweetNotFoundError => e
       flash.now[:error] = e.message
     end
@@ -51,7 +47,7 @@ class StaticPagesController < ApplicationController
   def generate_tweets(feed)
     @generated_tweets = []
     mc = setup_markov_chain(feed)
-    10.times { generate_tweet(mc) }
+    10.times { generate_tweet mc }
   end
 
   def generate_tweet(mc)
@@ -63,5 +59,16 @@ class StaticPagesController < ApplicationController
     mc = MarkovChain.new :prefix_length => 1
     mc.add_lines feed
     mc
+  end
+
+  def send_tweet(tweet_id)
+    tweets = Tweet.where("id = #{tweet_id.to_i} AND created_at > '#{get_time_limit}'")
+    raise StaticPagesController::TweetNotFoundError, TWEET_NOT_FOUND_ERROR if tweets.empty?
+    @tweet = tweets.first.tweet
+    $client.update @tweet
+  end
+
+  def get_time_limit
+    (Time.now - (60 * 10)).to_s
   end
 end
