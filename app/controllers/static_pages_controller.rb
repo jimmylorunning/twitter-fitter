@@ -1,7 +1,9 @@
 class StaticPagesController < ApplicationController
 
   class InsufficientDataError < StandardError; end
+  class TweetNotFoundError < StandardError; end
   INSUFFICIENT_DATA_ERROR = "Sorry, there aren't enough original tweets from those two accounts to combine!"
+  TWEET_NOT_FOUND_ERROR = "Sorry that tweet has expired or can't be found."
 
   def home
     @handle1 = params['twitter_handle1']
@@ -19,9 +21,15 @@ class StaticPagesController < ApplicationController
   def tweet
     @handle1 = params['handle1']
     @handle2 = params['handle2']
-    tweet = Tweet.find_by_id(params['tweet_id'].to_i)
-    @tweet = tweet.tweet
-    $client.update(@tweet)
+    time_limit = (Time.now - (60 * 10)).to_s
+    begin
+      tweets = Tweet.where("id = #{params['tweet_id'].to_i} AND created_at > '#{time_limit}'")
+      raise StaticPagesController::TweetNotFoundError, TWEET_NOT_FOUND_ERROR if tweets.empty?
+      @tweet = tweets.first.tweet
+      $client.update(@tweet)
+    rescue StaticPagesController::TweetNotFoundError => e
+      flash.now[:error] = e.message
+    end
     render 'home'
   end
 
