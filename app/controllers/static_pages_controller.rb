@@ -5,13 +5,10 @@ class StaticPagesController < ApplicationController
   	@handle2 = params['twitter_handle2']
   	return if (@handle1.nil? || @handle1.empty? || @handle2.nil? || @handle2.empty?)
   	begin
-			feed1 = $client.user_timeline(@handle1, :count => 200)
-			feed2 = $client.user_timeline(@handle2, :count => 200)
-			feed = filter_out_crap feed1 + feed2
+			feed = Feed.new($client.user_timeline(@handle1, :count => 200) + $client.user_timeline(@handle2, :count => 200))
 			mc = MarkovChain.new :prefix_length => 1
 
 			feed.each do |tweet|
-				tweet = tweet.full_text.gsub(/(https?:[\w|\/|\.|\?|\&]+)/i, '')
 				mc.add_line tweet
 			end
 
@@ -32,16 +29,5 @@ class StaticPagesController < ApplicationController
   	$client.update(@tweet)
   	render 'home'
   end
-
-### helper methods
-
-	def filter_out_crap feed
-		feed.reject do |tweet|
-			(tweet.full_text[0] == '@') || (tweet.full_text[0..3] == 'RT @') || (tweet.full_text[1] == '@')
-		end
-	end
-
-### I need a Feed class
-### methods: add(feed1, feed2), filter_out_crap, remove_links
 
 end
