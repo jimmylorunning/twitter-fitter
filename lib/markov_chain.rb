@@ -40,6 +40,12 @@ class MarkovChain
 		end
 	end
 
+	def add_lines(lines)
+		lines.each do |line|
+			add_line(line)
+		end
+	end
+
 	# generates the suffix randomly by default
 	def suffix(prefix, generator=lambda { |suffixes| suffixes[Random.rand(suffixes.length)] } )
 		if self._chain[prefix]
