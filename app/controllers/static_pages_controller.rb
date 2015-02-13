@@ -1,11 +1,17 @@
 class StaticPagesController < ApplicationController
+
+  class InsufficientDataError < StandardError; end
+  INSUFFICIENT_DATA_ERROR = "Sorry, there aren't enough original tweets from those two accounts to combine!"
+
   def home
     @handle1 = params['twitter_handle1']
     @handle2 = params['twitter_handle2']
     return if missing_handles? params
     begin
       generate_tweets(get_feed)
-    rescue Exception => e
+    rescue Twitter::Error => e
+      flash.now[:error] = "Twitter error: #{e.message}"
+    rescue StaticPagesController::InsufficientDataError => e
       flash.now[:error] = e.message
     end
   end
@@ -23,7 +29,7 @@ class StaticPagesController < ApplicationController
 
   def get_feed
       feed = Feed.new($client.user_timeline(@handle1, :count => 200) + $client.user_timeline(@handle2, :count => 200))
-      raise "Sorry, there aren't enough original tweets from those two accounts to combine!" if feed.count < 10
+      raise StaticPagesController::InsufficientDataError, INSUFFICIENT_DATA_ERROR if feed.count < 10
       feed
   end
 
