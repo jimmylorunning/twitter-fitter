@@ -1,3 +1,3 @@
-== Twitter, Fitter(, Happier)
+== Twitter, Fitter
 
-Week 3 of An App Per Week. I'm really not sure what this app will end up doing. This is my third non-tutorial Rails app. All I know is I want to interface with the Twitter API somehow, pull some tweets down and do some kind of cool calculation on it. I will be continuously deploying to {Heroku}[https://secret-brushlands-4139.herokuapp.com/]. You can also read about what I've learned on {my blog}[http://jimmylocoding.com].
+I made this app as a way of learning about Rails, the Twitter API, and markov chains. But it turned out pretty awesome: Twitter Fitter is an app where you can join any two Twitter accounts to create new and interesting franken-tweets. You can see it in action on to {Heroku}[https://secret-brushlands-4139.herokuapp.com/]. You can also read about what I've learned on {my blog}[http://jimmylocoding.com].
