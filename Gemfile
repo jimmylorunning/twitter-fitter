@@ -17,6 +17,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'simplecov'
   gem 'pry'
+  gem 'rubocop'
 end
 
 group :production do

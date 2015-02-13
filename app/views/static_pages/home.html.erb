@@ -1,17 +1,17 @@
 <%= render "header" %>
 <div class="main">
 <div class="container">
-	<div class="row">
-		<div class="col-sm-12 main-body">
-			<% if !(@generated_tweets.nil? || @generated_tweets.empty?) %>
-				<%= render "tweets" %>
-			<% elsif !(@tweet.nil? || @tweet.empty?) %>
-				<%= render "tweeted" %>
-			<% else %>
-				<%= render "explanation" %>
-			<% end %>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-sm-12 main-body">
+      <% if !(@generated_tweets.nil? || @generated_tweets.empty?) %>
+        <%= render "tweets" %>
+      <% elsif !(@tweet.nil? || @tweet.empty?) %>
+        <%= render "tweeted" %>
+      <% else %>
+        <%= render "explanation" %>
+      <% end %>
+    </div>
+  </div>
 </div>
 </div>
 <%= render "footer" %>
