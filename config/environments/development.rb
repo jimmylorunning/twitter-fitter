@@ -27,6 +27,7 @@ TwitterFitter::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  ENV['SSL_CERT_FILE'] = "/Users/jimmylo/cacert.pem"
+  config.time_zone = "Eastern Time (US & Canada)"
 
+  ENV['SSL_CERT_FILE'] = "/Users/jimmylo/cacert.pem"
 end
