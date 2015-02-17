@@ -32,7 +32,8 @@ class StaticPagesController < ApplicationController
   private
 
   def get_feed
-      feed = Feed.new($client.user_timeline(@handle1, :count => 200) + $client.user_timeline(@handle2, :count => 200))
+      @twitter = TwitterWrapper.new $client
+      feed = Feed.new(@twitter.get_timeline(@handle1) + @twitter.get_timeline(@handle2))
       raise StaticPagesController::InsufficientDataError, INSUFFICIENT_DATA_ERROR if feed.count < 10
       feed
   end
@@ -46,7 +47,7 @@ class StaticPagesController < ApplicationController
 
   def generate_tweets(feed)
     @generated_tweets = []
-    mc = setup_markov_chain(feed)
+    mc = setup_markov_chain feed
     10.times { generate_tweet mc }
   end
 
@@ -65,10 +66,11 @@ class StaticPagesController < ApplicationController
     tweets = Tweet.where("id = #{tweet_id.to_i} AND created_at > '#{get_time_limit}'")
     raise StaticPagesController::TweetNotFoundError, TWEET_NOT_FOUND_ERROR if tweets.empty?
     @tweet = tweets.first.tweet
-    $client.update @tweet
+    @twitter = TwitterWrapper.new $client
+    @twitter.tweet @tweet
   end
 
   def get_time_limit
-    (Time.now - (60 * 10)).to_s
+    (Time.now - (60 * 10)).in_time_zone("UTC").to_s
   end
 end
