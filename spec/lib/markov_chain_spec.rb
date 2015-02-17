@@ -144,8 +144,8 @@ RSpec.describe MarkovChain do
   	context "when there are more than one possibilities" do
 	  	it "returns one of many possible suffixes" do
 	  		# seed specified in spec_helper
-	  		expect(@mc.suffix(['it', 'is'])).to eq('not')
 	  		expect(@mc.suffix(['it', 'is'])).to eq('and')
+	  		expect(@mc.suffix(['it', 'is'])).to eq('not')
 	  		expect(@mc.suffix(['it', 'is'])).to eq('not')
 	  	end
 
@@ -168,7 +168,7 @@ RSpec.describe MarkovChain do
       mc.add_line 'it is what it is and it is not what it is so not dude ok'
       mc.add_line 'sometimes it is just so frustrating when it is difficult'
 
-  		expect(mc.generate).to eq('it is just so frustrating when it is not what it is and it is so not dude ok')
+  		expect(mc.generate).to eq('it is not what it is and it is so not dude ok')
    		expect(mc.generate).to eq('it is so not dude ok')
    		expect(mc.generate).to eq('sometimes it is and it is what it is and it is what it is what it is and it is so not dude ok')
   	end
