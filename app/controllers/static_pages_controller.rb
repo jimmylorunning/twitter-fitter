@@ -31,8 +31,8 @@ class StaticPagesController < ApplicationController
   private
 
   def set_handles
-    @handle1 = params['handle1']
-    @handle2 = params['handle2']
+    @handle1 = params['twitter_handle1'] || params['handle1']
+    @handle2 = params['twitter_handle2'] || params['handle2']
   end
 
   def get_feed
