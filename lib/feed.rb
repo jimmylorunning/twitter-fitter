@@ -2,10 +2,11 @@ class Feed
   include Enumerable
   attr_accessor :feed
 
-  def initialize(raw_feed)
+  def initialize(raw_feed=nil)
     @feed = []
-    add raw_feed
-    clean
+    unless raw_feed.nil?
+      process_feed raw_feed
+    end
   end
 
   def each(&block)
@@ -13,6 +14,13 @@ class Feed
       block.call(tweet[:tweet])
     end
   end
+
+  def process_feed(raw_feed)
+    add raw_feed
+    clean
+  end
+
+  private
 
   def add(raw_feed)
     @feed = @feed + raw_feed

@@ -1,5 +1,7 @@
 class TwitterWrapper
 
+	attr_accessor :client
+
 	def initialize(client)
 		@client = client
 	end

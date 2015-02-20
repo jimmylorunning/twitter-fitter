@@ -2,12 +2,13 @@ class StaticPagesController < ApplicationController
 
   class InsufficientDataError < StandardError; end
   class TweetNotFoundError < StandardError; end
+
+  before_filter :set_handles, :only => [:home, :tweet]
+
   INSUFFICIENT_DATA_ERROR = "Sorry, there aren't enough original tweets from those two accounts to combine!"
   TWEET_NOT_FOUND_ERROR = "Sorry that tweet has expired or can't be found."
 
   def home
-    @handle1 = params['twitter_handle1']
-    @handle2 = params['twitter_handle2']
     return if missing_handles? params
     begin
       generate_tweets get_feed
@@ -19,8 +20,6 @@ class StaticPagesController < ApplicationController
   end
 
   def tweet
-    @handle1 = params['handle1']
-    @handle2 = params['handle2']
     begin
       send_tweet params[:tweet_id]
     rescue StaticPagesController::TweetNotFoundError => e
@@ -30,6 +29,11 @@ class StaticPagesController < ApplicationController
   end
 
   private
+
+  def set_handles
+    @handle1 = params['handle1']
+    @handle2 = params['handle2']
+  end
 
   def get_feed
       @twitter = TwitterWrapper.new $client
@@ -52,7 +56,7 @@ class StaticPagesController < ApplicationController
   end
 
   def generate_tweet(mc)
-    t = Tweet.create!(handle1: @handle1, handle2: @handle2, tweet: mc.generate)
+    t = Tweet.create(handle1: @handle1, handle2: @handle2, tweet: mc.generate)
     @generated_tweets << { id: t.id, tweet: t.tweet }
   end
 
