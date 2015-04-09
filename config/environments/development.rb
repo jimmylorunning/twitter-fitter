@@ -29,5 +29,5 @@ TwitterFitter::Application.configure do
 
   config.time_zone = "Eastern Time (US & Canada)"
 
-  ENV['SSL_CERT_FILE'] = "/Users/jimmylo/cacert.pem"
+  ENV['SSL_CERT_FILE'] = "/Users/jimmy/cacert.pem"
 end
