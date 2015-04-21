@@ -18,6 +18,8 @@ group :development, :test do
   gem 'simplecov'
   gem 'pry'
   gem 'rubocop'
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :production do

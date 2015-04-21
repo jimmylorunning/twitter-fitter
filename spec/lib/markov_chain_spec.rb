@@ -5,14 +5,14 @@ RSpec.describe MarkovChain do
   describe "initialize" do
     it "creates a default MarkovChain object when given no parameters" do
     	mc = MarkovChain.new
-    	expect(mc._prefix_length).to eq([2])
+    	expect(mc._prefix_lengths).to eq([2])
     	expect(mc._case_insensitive).to eq(true)
     	expect(mc.output_length).to eq(26)
     end
 
     it "creates a custom MarkovChain object with given parameters" do
-    	mc = MarkovChain.new :prefix_length => [3], :output_length => 12
-    	expect(mc._prefix_length).to eq([3])
+    	mc = MarkovChain.new :prefix_lengths => [3], :output_length => 12
+    	expect(mc._prefix_lengths).to eq([3])
     	expect(mc._case_insensitive).to eq(true)
     	expect(mc.output_length).to eq(12)
       mc2 = MarkovChain.new :case_insensitive => false
@@ -21,7 +21,7 @@ RSpec.describe MarkovChain do
 
     it "raises an error if given invalid prefix length" do
     	expect{
-    		MarkovChain.new(:prefix_length => [0, 1])
+    		MarkovChain.new(:prefix_lengths => [0, 1])
     	}.to raise_error(ArgumentError)
     end
   end
@@ -224,10 +224,10 @@ RSpec.describe MarkovChain do
 
   # new_prefix is a private class. REMOVE this test if it gives you any problems.
   describe "_new_prefixes" do
-  	it "should generate an array of arrays of empty strings, one empty array for each prefix_length" do
+  	it "should generate an array of arrays of empty strings, one empty array for each prefix_lengths" do
   		mc = MarkovChain.new
   		expect(mc._new_prefixes).to eq([['', '']])
-  		mc = MarkovChain.new :prefix_length => [7]
+  		mc = MarkovChain.new :prefix_lengths => [7]
   		expect(mc._new_prefixes).to eq([['','','','','','','']])
   	end
   end
