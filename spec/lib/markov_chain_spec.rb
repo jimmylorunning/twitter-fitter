@@ -27,16 +27,33 @@ RSpec.describe MarkovChain do
   end
 
   describe "add" do
-  	before(:each) { @mc = MarkovChain.new }
+  	before(:each) do
+      @mc = MarkovChain.new 
+      @mc2 = MarkovChain.new :prefix_lengths => [1,2]
+    end
 
-  	it "adds new prefix => suffix if prefix not found" do
-  		@mc.add 'i'
-  		chain = {['',''] => ['i']}
-  		expect(@mc._chain).to eq(chain)
-  		@mc.add 'am'
-  		chain[['', 'i']] = ['am']
-  		expect(@mc._chain).to eq(chain)
-  	end
+    context "for one prefix length" do
+      it "adds new prefix => suffix if prefix not found" do
+        @mc.add 'i'
+        chain = {['',''] => ['i']}
+        expect(@mc._chain).to eq(chain)
+        @mc.add 'am'
+        chain[['', 'i']] = ['am']
+        expect(@mc._chain).to eq(chain)
+      end
+    end
+
+    context "for two prefix lengths" do
+      it "adds new prefix => suffix if prefix not found" do
+        @mc2.add 'i'
+        chain2 = {[''] => ['i'], ['',''] => ['i']}
+        expect(@mc2._chain).to eq(chain2)
+        @mc2.add 'am'
+        chain2[['i']] = ['am']
+        chain2[['', 'i']] = ['am']
+        expect(@mc2._chain).to eq(chain2)
+      end
+    end
 
   	it "adds new suffix possibilities to existing prefix" do
   		@mc.add 'i'
@@ -133,33 +150,72 @@ RSpec.describe MarkovChain do
   	before(:each) do
   		@mc = MarkovChain.new
   		@mc.add_line 'it is what it is and it is not what it is so not dude ok'
+      @mc2 = MarkovChain.new :prefix_lengths => [1, 2]
+      @mc2.add_line 'something is lol it is what it is and it is not what it is so not is dude foobar ok'
   	end
 
   	context "when there is just one possible suffix" do
-	  	it "returns that suffix" do
-	  		expect(@mc.suffix(['not', 'dude'])).to eq('ok')
-	  	end
+
+      context "and there is only one prefix length" do
+        it "returns that suffix" do
+          expect(@mc.suffix(['not', 'dude'])).to eq('ok')
+        end
+      end
+
+      context "and there are 2 prefix lengths" do
+        it "returns that suffix" do
+          expect(@mc2.suffix(['dude', 'foobar'])).to eq('ok')
+          expect(@mc2.suffix(['foobar'])).to eq('ok')
+        end
+      end
+
   	end
 
   	context "when there are more than one possibilities" do
-	  	it "returns one of many possible suffixes" do
-	  		# seed specified in spec_helper
-	  		expect(@mc.suffix(['it', 'is'])).to eq('and')
-	  		expect(@mc.suffix(['it', 'is'])).to eq('not')
-	  		expect(@mc.suffix(['it', 'is'])).to eq('not')
-	  	end
+      
+      context "for cases with one prefix length" do
+        
+        it "returns one of many possible suffixes" do
+            expect(@mc.suffix(['it', 'is'])).to eq('and')
+            expect(@mc.suffix(['it', 'is'])).to eq('not')
+            expect(@mc.suffix(['it', 'is'])).to eq('not')
+        end
 
-	  	it "returns suffix based on custom algorithm" do
-	  		expect(@mc.suffix(['it', 'is'], lambda { |suffixes| suffixes.last })).to eq('so')
-	  		expect(@mc.suffix(['it', 'is'], lambda { |suffixes| suffixes.first })).to eq('what')
-	  	end
+        it "returns suffix based on custom algorithm" do
+          expect(@mc.suffix(['it', 'is'], lambda { |suffixes| suffixes.last })).to eq('so')
+          expect(@mc.suffix(['it', 'is'], lambda { |suffixes| suffixes.first })).to eq('what')
+        end
 
-      it "returns suffix without regard to case if case insensitive flag set" do
-        @mc.add_line 'IT IS WHAT IT IS AND IT IS NOT WHAT IT IS SO NOT DUDE OK'
-        expect(@mc.suffix(['it', 'is'], lambda {|suffixes| suffixes})).to eq(['what', 'and', 'not', 'so', 'WHAT', 'AND', 'NOT', 'SO'])
+        it "returns suffix without regard to case if case insensitive flag set" do
+          @mc.add_line 'IT IS WHAT IT IS AND IT IS NOT WHAT IT IS SO NOT DUDE OK'
+          expect(@mc.suffix(['it', 'is'], lambda {|suffixes| suffixes})).to eq(['what', 'and', 'not', 'so', 'WHAT', 'AND', 'NOT', 'SO'])
+        end
+
+      end
+
+      context "for cases with more than one prefix lengths" do
+
+        it "returns one of many possible suffixes" do
+            expect(@mc2.suffix(['it', 'is'])).to eq('what')
+            expect(@mc2.suffix(['it', 'is'])).to eq('not')
+            expect(@mc2.suffix(['it', 'is'])).to eq('not')
+        end
+
+        it "returns suffix based on custom algorithm" do
+          expect(@mc2.suffix(['it', 'is'], lambda { |suffixes| suffixes.last })).to eq('so')
+          expect(@mc2.suffix(['is'], lambda { |suffixes| suffixes.last })).to eq('dude')
+          expect(@mc2.suffix(['it', 'is'], lambda { |suffixes| suffixes.first })).to eq('what')
+          expect(@mc2.suffix(['is'], lambda { |suffixes| suffixes.first })).to eq('lol')
+        end
+
+        it "returns suffix without regard to case if case insensitive flag set" do
+          @mc2.add_line 'IT IS WHAT IT IS AND IT IS NOT WHAT IT IS SO NOT DUDE OK'
+          expect(@mc2.suffix(['it', 'is'], lambda {|suffixes| suffixes})).to eq(['what', 'and', 'not', 'so', 'WHAT', 'AND', 'NOT', 'SO'])
+          expect(@mc2.suffix(['is'], lambda {|suffixes| suffixes})).to eq(['lol', 'what', 'and', 'not', 'so', 'dude', 'WHAT', 'AND', 'NOT', 'SO'])
+        end
+        
       end
 	  end
-
   end
 
   describe "generate" do
@@ -168,7 +224,7 @@ RSpec.describe MarkovChain do
       mc.add_line 'it is what it is and it is not what it is so not dude ok'
       mc.add_line 'sometimes it is just so frustrating when it is difficult'
 
-  		expect(mc.generate).to eq('it is not what it is and it is so not dude ok')
+  		expect(mc.generate).to eq('sometimes it is so not dude ok')
    		expect(mc.generate).to eq('it is so not dude ok')
    		expect(mc.generate).to eq('sometimes it is and it is what it is and it is what it is what it is and it is so not dude ok')
   	end
@@ -195,13 +251,13 @@ RSpec.describe MarkovChain do
 
     it "should generate random markov string -- case sensitive" do
       mc = MarkovChain.new :case_insensitive => false
-      mc.add_line 'IT is what iT iS and It Is not what iT Is so not dude ok'
+      mc.add_line 'IT is sometimes it IS just so frustrating when IT is what iT Is so not dude ok'
       mc.add_line 'IT is sometimes it IS just so frustrating when IT is difficult'
 
       expect(mc._case_insensitive).to eq(false)
-      expect(mc.generate).to eq('IT is what iT iS and It Is not what iT Is so not dude ok')
-      expect(mc.generate).to eq('IT is difficult')
-      expect(mc.generate).to eq('IT is sometimes it IS just so frustrating when IT is what iT iS and It Is not what iT Is so not dude ok')
+      expect(mc.generate).to eq('IT is sometimes it IS just so frustrating when IT is sometimes it IS just so frustrating when IT is sometimes it IS just so frustrating')
+      expect(mc.generate).to eq("IT is sometimes it IS just so frustrating when IT is sometimes it IS just so frustrating when IT is sometimes it IS just so frustrating")
+      expect(mc.generate).to eq("IT is sometimes it IS just so frustrating when IT is difficult")
     end
 
   end
