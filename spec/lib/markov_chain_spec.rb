@@ -232,4 +232,11 @@ RSpec.describe MarkovChain do
   	end
   end
 
+  describe "_advance_prefixes" do
+    it "should return the next prefix" do
+      mc = MarkovChain.new
+      expect(mc._advance_prefixes([['hello', 'world'], ['world']], 'fOObar')).to eq([['world', 'foobar'], ['foobar']])
+    end
+  end
+
 end
