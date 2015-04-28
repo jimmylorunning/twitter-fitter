@@ -61,7 +61,7 @@ class StaticPagesController < ApplicationController
   end
 
   def setup_markov_chain(feed)
-    mc = MarkovChain.new :prefix_length => 1
+    mc = MarkovChain.new :prefix_lengths => [1, 2]
     mc.add_lines feed
     mc
   end
